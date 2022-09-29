@@ -1,0 +1,12 @@
+version: "2"
+services:
+  chatServer:
+    image: "redis:alpine"
+    command: "redis-server --port 6379"
+    container_name: redis_bot
+    hostname: localhost
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - 6379:6379
