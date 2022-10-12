@@ -67,14 +67,14 @@ export class ChatGateway
     @ConnectedSocket() client: Socket,
   ) {
     const from = client.request.headers.authorization;
-    this.server.emit(EVENT.EVERYONE, { from, message });
+    client.broadcast.emit(EVENT.EVERYONE, { from, message });
   }
 
   @SubscribeMessage(EVENT.WHISPER)
   async whisper(@MessageBody() req, @ConnectedSocket() client: Socket) {
     const from = client.request.headers.authorization;
     const target = await this.redis.get(req.target);
-    client.to(target).emit(EVENT.WHISPER, { from, message: req.message });
+    this.server.to(target).emit(EVENT.WHISPER, { from, message: req.message });
   }
 
   @SubscribeMessage(EVENT.CHANNEL_MESSAGE)
